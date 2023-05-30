@@ -18,13 +18,30 @@ public class Client {
 
         try (Socket socket = new Socket(hostname, port)) {
 
-            InputStream input = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            OutputStream output = socket.getOutputStream();
+            PrintWriter writer = new PrintWriter(output, true);
 
-            String time = reader.readLine();
 
-            System.out.println(time);
+            Console console = System.console();
+            String text;
 
+            do {
+
+                String ip = socket.getInetAddress().toString();
+                text = console.readLine("Enter text: ");
+
+                writer.println(text + ip);
+
+                InputStream input = socket.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+                String time = reader.readLine();
+
+                System.out.println(time);
+
+            } while (!text.equals("bye"));
+
+            socket.close();
 
         } catch (UnknownHostException ex) {
 
