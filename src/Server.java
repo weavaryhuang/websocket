@@ -10,9 +10,10 @@ import java.util.Date;
 public class Server {
 
     public static void main(String[] args) {
-        if (args.length < 1) return;
+//        if (args.length < 1) return;
 
-        int port = Integer.parseInt(args[0]);
+//        int port = Integer.parseInt(args[0]); // [c] [f] [v1] #v1 = args[0]
+        int port = 6500;
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
 
