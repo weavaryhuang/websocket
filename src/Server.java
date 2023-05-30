@@ -1,62 +1,37 @@
-import java.net.*;
 import java.io.*;
+import java.net.*;
+import java.util.Date;
 
-import static java.lang.System.exit;
-import static java.lang.System.in;
+/**
+ * This program demonstrates a simple TCP/IP socket server.
+ *
+ * @author www.codejava.net
+ */
+public class Server {
 
-public class Server
-{
-    int port;
-    // constructor with port
-    public Server(int port)
-    {
-        // starts server and waits for a connection
-        try
-        {
-            ServerSocket server = new ServerSocket(port);
-            System.out.println("Server started");
+    public static void main(String[] args) {
+        if (args.length < 1) return;
 
-            System.out.println("Waiting for a client ...");
+        int port = Integer.parseInt(args[0]);
 
-            //initialize socket and input stream
-            Socket socket = server.accept();
-            System.out.println("Client accepted");
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
 
-            // takes input from the client socket
-            BufferedReader input = new BufferedReader(new InputStreamReader(in));
-            DataInputStream in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            System.out.println("Server is listening on port " + port);
 
-            String line = "";
+            while (true) {
+                Socket socket = serverSocket.accept();
 
-            // reads message from client until "Over" is sent
-            while (!line.equals("Over"))
-            {
-                try
-                {
-                    line = in.readUTF();
-                    System.out.println(line);
-                }
-                catch(IOException i)
-                {
-                    System.out.println(i.toString());
-                    break;
-                }
+                System.out.println("New client connected");
+
+                OutputStream output = socket.getOutputStream();
+                PrintWriter writer = new PrintWriter(output, true);
+
+                writer.println(new Date().toString());
             }
-            System.out.println("Closing connection");
 
-            // close connection
-            socket.close();
-            in.close();
+        } catch (IOException ex) {
+            System.out.println("Server exception: " + ex.getMessage());
+            ex.printStackTrace();
         }
-        catch(IOException i)
-        {
-            System.out.println(i.toString());
-        }
-    }
-
-    public static void main(String[] args)
-    {
-        Server server = new Server(5000);
     }
 }

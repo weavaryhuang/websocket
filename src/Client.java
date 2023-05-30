@@ -1,64 +1,36 @@
-import java.io.*;
 import java.net.*;
+import java.io.*;
 
-import static java.lang.System.in;
+/**
+ * This program demonstrates a simple TCP/IP socket client.
+ *
+ * @author www.codejava.net
+ */
+public class Client {
 
-public class Client  {
+    public static void main(String[] args) {
+        if (args.length < 2) return;
 
-    // constructor to put ip address and port
-    String address;
-    int port;
-    public Client(String address, int port) {
-        // establish a connection
-        // initialize socket and input output streams
-        Socket socket = null;
-        BufferedReader input = null;
-        DataOutputStream out = null;
-        try {
-            socket = new Socket(address, port);
-            System.out.println("Connected");
+        String hostname = args[0];
+        int port = Integer.parseInt(args[1]);
 
-            // takes input from terminal
-            input = new BufferedReader(new InputStreamReader(in));
-            DataInputStream in = new DataInputStream(
-                    new BufferedInputStream(socket.getInputStream()));
+        try (Socket socket = new Socket(hostname, port)) {
 
-            // sends output to the socket
-            out = new DataOutputStream(
-                    socket.getOutputStream());
+            InputStream input = socket.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+            String time = reader.readLine();
+
+            System.out.println(time);
+
+
+        } catch (UnknownHostException ex) {
+
+            System.out.println("Server not found: " + ex.getMessage());
+
+        } catch (IOException ex) {
+
+            System.out.println("I/O error: " + ex.getMessage());
         }
-        catch (IOException i) {
-            System.out.println(i.toString());
-            return;
-        }
-
-        // string to read message from input
-        String line = "";
-
-        // keep reading until "Over" is input
-        while (!line.equals("Over")) {
-            try {
-                line = input.readLine();
-                out.writeUTF(line);
-            }
-            catch (IOException i) {
-                System.out.println(i.toString());
-            }
-        }
-
-        // close the connection
-        try {
-            input.close();
-            out.close();
-            socket.close();
-        }
-        catch (IOException i) {
-            System.out.println(i.toString());
-        }
-    }
-
-    public static void main(String[] args)
-    {
-        Client client = new Client("127.0.0.1", 5000);
     }
 }
