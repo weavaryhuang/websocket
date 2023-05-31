@@ -3,7 +3,7 @@ import java.io.*;
 
 /**
  * This program demonstrates a simple TCP/IP socket client.
- *
+ *dfgd
  * @author www.codejava.net
  */
 public class Client {
