@@ -28,14 +28,16 @@ public class ServerThread extends Thread {
                 text = reader.readLine();
                 String[] message = text.split("/", 2);
                 System.out.println("Client form " + message[1]);
+                System.out.println(text);
 
-                if (message[0].equals("a")) {
-                    writer.println("Server: .html");
+                if (message[0].equals("index")) {
+                    writer.println(message[0] + ".html");
                 } else {
-                    writer.println("Server: " + message[0]);
+//                    writer.println("Server: " + message[0]);
+                    writer.println("Server: accepted");
                 }
 
-            } while (!text.equals("bye"));
+            } while (!text.equals("exit"));
 
             socket.close();
         } catch (IOException ex) {

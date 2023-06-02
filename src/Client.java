@@ -35,11 +35,11 @@ public class Client {
                 InputStream input = socket.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
-                String time = reader.readLine();
+                String message = reader.readLine();
 
-                System.out.println(time);
+                System.out.println(message + "\n");
 
-            } while (!text.equals("bye"));
+            } while (!text.equals("exit"));
 
             socket.close();
 

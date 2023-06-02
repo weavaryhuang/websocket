@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.util.Date;
 
 /**
  * This program demonstrates a simple TCP/IP socket server.
@@ -11,7 +10,7 @@ public class Server {
 
     public static void main(String[] args) {
 //        if (args.length < 1) return;
-
+//        ServerThread serverThread = null;
 //        int port = Integer.parseInt(args[0]); // [c] [f] [v1] #v1 = args[0]
         int port = 6500;
 
@@ -23,7 +22,8 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected");
 
-                new ServerThread(socket).start();
+                new ServerThread(socket).start(); // Thread, please use javac Server.java ServerThread.java to create class to run Server
+
 
 //                InputStream input = socket.getInputStream();
 //                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
